@@ -1,4 +1,4 @@
-package org.techfire225.lib.motion;
+package org.firstcapital.lib.motion;
 
 public class TrapezoidalMotionProfile {	
 	
