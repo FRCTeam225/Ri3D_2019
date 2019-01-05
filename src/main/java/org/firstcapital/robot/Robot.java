@@ -1,7 +1,7 @@
-package org.techfire225.robot;
+package org.firstcapital.robot;
 
-import org.techfire225.robot.commands.autonomous.DoNothing;
-import org.techfire225.robot.subsystems.Drivetrain;
+import org.firstcapital.robot.commands.autonomous.DoNothing;
+import org.firstcapital.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;

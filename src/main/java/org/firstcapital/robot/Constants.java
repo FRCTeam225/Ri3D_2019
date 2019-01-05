@@ -1,8 +1,8 @@
-package org.techfire225.robot;
+package org.firstcapital.robot;
 
 import java.io.File;
 
-import org.techfire225.lib.framework.InterpolatingTree;
+import org.firstcapital.lib.framework.InterpolatingTree;
 
 public class Constants {
 	

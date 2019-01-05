@@ -1,6 +1,6 @@
-package org.techfire225.robot.commands.autonomous;
+package org.firstcapital.robot.commands.autonomous;
 
-import org.techfire225.robot.Autonomous;
+import org.firstcapital.robot.Autonomous;
 
 public class DoNothing extends Autonomous {
 

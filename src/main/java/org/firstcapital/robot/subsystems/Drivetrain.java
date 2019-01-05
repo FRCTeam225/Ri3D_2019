@@ -1,12 +1,12 @@
-package org.techfire225.robot.subsystems;
+package org.firstcapital.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import org.techfire225.robot.Constants;
-import org.techfire225.robot.PortMap;
-import org.techfire225.robot.commands.drivetrain.CheesyDrive;
+import org.firstcapital.robot.Constants;
+import org.firstcapital.robot.PortMap;
+import org.firstcapital.robot.commands.drivetrain.CheesyDrive;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
