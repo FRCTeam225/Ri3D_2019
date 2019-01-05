@@ -19,6 +19,8 @@ public abstract class TFSubsystem<Mode_T> extends Subsystem {
 	public boolean atSetpoint() {
 		return onTarget;
 	}
+
+	public abstract void update();
 	
-	public abstract void refreshConstants();
+	//public abstract void refreshConstants();
 }
