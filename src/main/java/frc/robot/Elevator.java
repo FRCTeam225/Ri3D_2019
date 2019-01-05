@@ -1,9 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.command.Subsystem;
+
 import org.techfire225.lib.motion.*;
 
-public class Elevator {
+public class Elevator extends Subsystem{
 
     public final double maxVel = 0;
     public final double maxAcc = 0;
@@ -21,6 +23,7 @@ public class Elevator {
     Encoder encoder = new Encoder(PortMap.ELEVATOR_ENCODER[0], PortMap.ELEVATOR_ENCODER[1]);
 
     public Elevator() {
+        set(0);
     }
 
     public void set(double speed) {
@@ -33,6 +36,8 @@ public class Elevator {
         profileTimer.reset();
         profileTimer.start();
     }
+
+    public void initDefaultCommand() {}
 
     public void update() {
         if ( profile == null )
