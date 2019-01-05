@@ -1,10 +1,5 @@
 package org.techfire225.robot;
 
-import org.techfire225.lib.framework.AxisButton;
-import org.techfire225.lib.framework.HoldMode;
-import org.techfire225.lib.framework.POVButton;
-import org.techfire225.lib.framework.SetMode;
-import org.techfire225.robot.commands.drivetrain.Shift;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;

@@ -1,8 +1,5 @@
 package org.techfire225.robot;
 
-
-import java.io.IOException;
-
 import org.techfire225.robot.commands.autonomous.DoNothing;
 import org.techfire225.robot.subsystems.Drivetrain;
 

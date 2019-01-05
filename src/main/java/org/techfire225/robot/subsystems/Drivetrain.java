@@ -1,25 +1,18 @@
 package org.techfire225.robot.subsystems;
 
-import org.techfire225.lib.framework.TFSubsystem;
-
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import org.techfire225.lib.framework.InterpolatingTree;
-import org.techfire225.lib.framework.Publisher;
 import org.techfire225.robot.Constants;
 import org.techfire225.robot.PortMap;
 import org.techfire225.robot.commands.drivetrain.CheesyDrive;
-import org.techfire225.robot.drivetrain.controllers.DrivetrainController;
-import org.techfire225.robot.drivetrain.controllers.TurnPIDController;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drivetrain extends Subsystem{
