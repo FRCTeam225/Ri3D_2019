@@ -6,6 +6,9 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
+import edu.wpi.first.wpilibj.Filesystem;
+import java.io.File;
+
 public class Webserver {
     public Webserver() throws Exception {
         Server server = new Server(5801);
@@ -24,7 +27,7 @@ public class Webserver {
         
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-        resource_handler.setResourceBase(Webserver.class.getClassLoader().getResource("www/").toExternalForm());
+        resource_handler.setResourceBase(new File(Filesystem.getDeployDirectory(), "www").getPath());
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { resource_handler, servlets });
