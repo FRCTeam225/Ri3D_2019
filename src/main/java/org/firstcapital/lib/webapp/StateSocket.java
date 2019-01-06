@@ -1,4 +1,4 @@
-package org.techfire225.lib.webapp;
+package org.firstcapital.lib.webapp;
 
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.WebSocketListener;

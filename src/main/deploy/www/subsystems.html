@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TechFire</title>
+		<script src="jquery.min.js"></script>
+		<script src="vue.js"></script>
+		<script src="smoothie.js"></script>
+		<link rel="stylesheet" href="bootstrap.min.css" />
+		<style type="text/css">
+			td {
+				float: right;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse navbar-static-top">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <a class="navbar-brand" href="/index.html">TechFire</a>
+	            </div>
+	            <ul class="nav navbar-nav">
+	                <li><a href="dashboard.html">Dashboard</a></li>
+	                <li><a href="constants.html">Constants</a></li>
+	                <li><a href="subsystems.html">Subsystems</a></li>
+	                <li><a href="vision.html">Vision Debug</a></li>
+	                <li><a href="view.html">View Camera</a></li>
+	            </ul>
+	        </div>
+	    </nav>  
+        
+    <div class="container">
+	  <h1>t = <span id="time">waiting for data</span></h1>
+      <h1 class="page-header">Shooter <small id="shooterMode">---</small></h1>
+      <canvas id="shooter-setpointrpm" height="500px" width="900px"></canvas>
+      <br>
+      <small>100rpm/y section, 1000ms/x section</small>
+
+	  <h1 class="page-header">Feeder</h1>
+      <canvas id="feeder-setpointrpm" height="500px" width="900px"></canvas>
+      <br>
+      <small>50rpm/y section, 1000ms/x section</small>
+
+		<h1 class="page-header">Drive linear <small id="drivetrainMode">---</small></h1>
+      <canvas id="drive-linear" height="500px" width="900px"></canvas>
+		<h1 class="page-header">Drive angular</h1>
+      <canvas id="drive-angular" height="500px" width="900px"></canvas>      
+		<h1 class="page-header">Gear Holder <small id="gearHolderMode">---</small></h1>
+		<h1 class="page-header">Hopper <small id="hopperMode">---</small></h1>
+		<h1 class="page-header">Climber <small id="climberMode">---</small></h1>
+		
+			<div id="recording">
+				<h1 class="page-header">Recorder</h1>
+					<button v-on:click="stopRecording" v-if="recording" class="btn btn-danger">Stop Recording</button>
+					<button v-on:click="startRecording" v-if="!recording" class="btn btn-success">Start Recording</button>
+					<br><br>
+					<a v-if="data" v-bind:href="data" download="robot.csv" class="btn btn-success">Download CSV</a>
+				</h1>
+			</div>
+
+			<div id="values">
+				<h1 class="page-header">Raw Values</h1>
+				<table class="table">
+					<tr v-for="(v,k) in topics">
+						<th>{{k}}</th>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+			</div>
+    </div>
+
+    <script type="text/javascript">
+
+			var record = [];
+
+			var recordingUI = new Vue({
+				el: "#recording",
+				data: {
+					recording: false,
+					needsHeaders: false,
+					data: false
+				},
+				methods: {
+					startRecording: function() {
+						if ( this.recording )
+							return;
+						record = [];
+						this.data = false;
+						this.needsHeaders = true;
+						this.recording = true;
+					},
+
+					stopRecording: function() {
+						if ( !this.recording || record.length == 0 ) {
+							this.recording = false;
+							return;
+						}
+
+						var csv = record.join("\n");
+						this.recording = false;
+						this.data = encodeURI("data:text/csv;charset=utf-8,"+csv);
+					}
+				}
+			});
+
+
+			var valueTable = new Vue({
+				el:"#values",
+				data: {
+					topics: {}
+				}
+			});
+
+
+			var sock = new WebSocket("ws://10.2.25.2:5801/state/socket");
+
+			var time = $("#time");
+
+			var shooterChart = new SmoothieChart({
+				maxValue: 3100,
+				minValue: 2600,
+				interpolation:'linear',
+				grid: {sharpLines:true, verticalSections: 10}
+			});
+			var shooterCanvas = document.getElementById("shooter-setpointrpm");
+
+    	var shooterRPM = new TimeSeries();
+    	var shooterSetpoint = new TimeSeries();
+    	
+    	shooterChart.addTimeSeries(shooterRPM, {lineWidth: 2, strokeStyle:'#0000ff'});
+    	shooterChart.addTimeSeries(shooterSetpoint, {lineWidth: 2, strokeStyle: '#00ff00'});
+
+			var feederChart = new SmoothieChart({
+				horizontalLines:[{color:'#ffffff',lineWidth:1,value:0}],
+				maxValue: 4000,
+				minValue: -400,
+				interpolation:'linear',
+				grid: {sharpLines:true, verticalSections: 44}
+			});
+			var feederCanvas = document.getElementById("feeder-setpointrpm");
+
+			var feederRPM = new TimeSeries();
+			var feederSetpoint = new TimeSeries();
+			feederChart.addTimeSeries(feederRPM, {lineWidth: 2, strokeStyle:'#0000ff'});
+			feederChart.addTimeSeries(feederSetpoint, {lineWidth: 2, strokeStyle: '#00ff00'});
+
+
+		var driveLinearChart = new SmoothieChart({
+				maxValue: 8500,
+				minValue: 0,
+				interpolation:'linear',
+				grid: {sharpLines:true, verticalSections: 10}
+		});
+		
+		var driveAngularChart = new SmoothieChart({
+				maxValue: 360,
+				minValue: -360,
+				interpolation:'linear',
+				grid: {sharpLines:true, verticalSections: 10}
+		});
+
+		var driveLinearSetpoint = new TimeSeries();
+    	var driveLinearCurrent = new TimeSeries();
+    	
+    	var driveAngularSetpoint = new TimeSeries();
+    	var driveAngularCurrent = new TimeSeries();
+    	
+    	driveLinearChart.addTimeSeries(driveLinearCurrent, {lineWidth: 2, strokeStyle:'#0000ff'});
+		driveLinearChart.addTimeSeries(driveLinearSetpoint, {lineWidth: 2, strokeStyle: '#00ff00'});    	
+    	    	
+   		driveAngularChart.addTimeSeries(driveAngularCurrent, {lineWidth: 2, strokeStyle:'#0000ff'});
+		driveAngularChart.addTimeSeries(driveAngularSetpoint, {lineWidth: 2, strokeStyle: '#00ff00'});        	
+    	    	
+    	var isFirstMessage = true;
+    	var tStart = 0;
+    	var tLocalStart = 0;
+			var msgCount = 0;
+	    sock.onmessage = function(rawmsg) {
+				var msg = JSON.parse(rawmsg.data);
+				time.text(msg.t);
+
+				if ( msgCount % 10 == 0 )
+					valueTable.topics = msg.topics;
+
+
+				if ( recordingUI.recording ) {
+					if ( recordingUI.needsHeaders ) {
+						recordingUI.needsHeaders = false;
+						var row = "t,";
+						for ( t in msg.topics )
+							row += t+",";
+						record.push(row);
+					}
+
+					var row = msg.t+",";
+					for ( t in msg.topics )
+						row += msg.topics[t]+",";
+					record.push(row);
+				}
+
+				var t = msg.t*1000; // to ms
+				if ( isFirstMessage ) {
+					tStart = t;
+					tLocalStart = new Date().getTime();
+					isFirstMessage = false;
+				}
+
+				shooterRPM.append(tLocalStart+(t-tStart), msg.topics['shooterRPM']);
+				shooterSetpoint.append(tLocalStart+(t-tStart), msg.topics['shooterSetpoint']);
+
+				feederRPM.append(tLocalStart+(t-tStart), msg.topics['feederRPM']);
+				feederSetpoint.append(tLocalStart+(t-tStart), msg.topics['feederSetpoint']);
+				
+				driveLinearCurrent.append(tLocalStart+(t-tStart), msg.topics['drivetrainLinearActual']);
+				driveLinearSetpoint.append(tLocalStart+(t-tStart), msg.topics['drivetrainLinearPos']);
+				
+				driveAngularCurrent.append(tLocalStart+(t-tStart), msg.topics['drivetrainAngularActual']);
+				driveAngularSetpoint.append(tLocalStart+(t-tStart), msg.topics['drivetrainAngularPos']);
+				
+				$("#shooterMode").text(msg.topics['shooterMode']);
+				$("#drivetrainMode").text(msg.topics['drivetrainMode']);
+				$("#gearHolderMode").text(msg.topics['gearHolderMode']);
+				$("#hopperMode").text(msg.topics['hopperMode']);
+				$("#climberMode").text(msg.topics['climberMode']);
+				
+				msgCount++;
+	    };
+
+	    sock.onerror = function() {
+	    	time.text("Disconnected");
+	    };
+
+	    sock.onclose = function() {
+	    	time.text("Disconnected");
+	    };
+
+
+		shooterChart.streamTo(shooterCanvas, 10);
+		feederChart.streamTo(feederCanvas, 10);
+		
+		driveLinearChart.streamTo(document.getElementById('drive-linear'));
+		driveAngularChart.streamTo(document.getElementById('drive-angular'));
+		
+    </script>
+  </body>
+</html>

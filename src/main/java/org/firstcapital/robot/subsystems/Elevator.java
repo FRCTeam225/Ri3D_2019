@@ -1,11 +1,12 @@
-package frc.robot;
+package org.firstcapital.robot.subsystems;
 
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-import org.techfire225.lib.motion.*;
+import org.firstcapital.lib.motion.*;
+import org.firstcapital.robot.*;
 
-public class Elevator extends Subsystem{
+public class Elevator extends Subsystem {
 
     public final double maxVel = 0;
     public final double maxAcc = 0;

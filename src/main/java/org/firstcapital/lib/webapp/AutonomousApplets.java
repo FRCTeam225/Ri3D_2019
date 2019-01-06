@@ -1,4 +1,4 @@
-package org.techfire225.lib.webapp;
+package org.firstcapital.lib.webapp;
 
 import java.io.IOException;
 
@@ -6,14 +6,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.firstcapital.robot.AutonomousChooser;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 public class AutonomousApplets  {
 	public static class AutonomousList extends HttpServlet {
 		protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-			/*
-			 * TODO: Update for 2018
 			AutonomousChooser chooser = AutonomousChooser.getInstance();
 			
 			JsonObject info = new JsonObject();
@@ -29,15 +29,11 @@ public class AutonomousApplets  {
 			res.setContentType("application/json");
 			res.setStatus(HttpServletResponse.SC_OK);
 			res.getWriter().println(info.toString());
-			*/
 		}
 	}
 	
 	public static class AutonomousSelect extends HttpServlet {
 		protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
-			/*
-			 * TODO: Update for 2018
-			 
 			AutonomousChooser chooser = AutonomousChooser.getInstance();
 			
 			
@@ -67,7 +63,6 @@ public class AutonomousApplets  {
 			res.setContentType("application/json");
 			res.setStatus(HttpServletResponse.SC_OK);
 			res.getWriter().println(selected.toString());
-			*/
 		}
 		
 	}

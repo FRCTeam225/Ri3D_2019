@@ -28,8 +28,6 @@ public class Drivetrain extends Subsystem{
 	Constants constants;
 		
 	PowerDistributionPanel pdp;
-	
-	double REMOVEME = 0;
 
 	public Drivetrain() {
 		pdp = new PowerDistributionPanel();

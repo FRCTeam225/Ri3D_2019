@@ -1,4 +1,4 @@
-package org.techfire225.lib.webapp;
+package org.firstcapital.lib.webapp;
 
 import com.google.gson.JsonArray;
 

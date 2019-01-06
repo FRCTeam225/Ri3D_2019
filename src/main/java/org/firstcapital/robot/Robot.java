@@ -1,5 +1,6 @@
 package org.firstcapital.robot;
 
+import org.firstcapital.lib.webapp.Webserver;
 import org.firstcapital.robot.commands.autonomous.DoNothing;
 import org.firstcapital.robot.subsystems.Drivetrain;
 
@@ -11,6 +12,7 @@ public class Robot extends TimedRobot {
 	
 	public static Constants constants;
 	public static Drivetrain drivetrain;
+	Webserver webserver;
 	
 	Command autonomousCommand = null;
 	
@@ -28,13 +30,19 @@ public class Robot extends TimedRobot {
     			new DoNothing(),
 			}
 		);
+
+		try {
+			webserver = new Webserver();
+		} catch (Exception e) {
+			System.err.println("Webapp server crashed");
+		}
 	}
 	
 	public void disabledInit() {
 	}
 	
 	public void disabledPeriodic() {
-		AutonomousChooser.getInstance().consoleSelectorUI(OI.autoSelectUp, OI.autoSelectDown);
+		//AutonomousChooser.getInstance().consoleSelectorUI(OI.autoSelectUp, OI.autoSelectDown);
 	}
 
 	public void autonomousInit() {
