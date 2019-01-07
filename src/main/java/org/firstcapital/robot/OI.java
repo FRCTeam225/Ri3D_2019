@@ -1,5 +1,8 @@
 package org.firstcapital.robot;
 
+import org.firstcapital.robot.commands.elevator.*;
+import org.firstcapital.robot.commands.drivetrain.*;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -26,6 +29,10 @@ public class OI {
 	public static Button autoSelectDown = new JoystickButton(driver, A);
 	
 	public static void init() {
-		
+        new JoystickButton(driver, A).whenPressed(new DriveProfiledDistance(24.0, 0, 24, 12));
+        //new JoystickButton(operator, Y).whenPressed(new MoveElevator(5000));
+        //new JoystickButton(operator, X).whenPressed(new MoveElevator(3000));
+        //new JoystickButton(operator, A).whenPressed(new MoveElevator(10));
+        //new JoystickButton(operator, B).whenPressed(new ManualElevator());
 	}
 }

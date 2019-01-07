@@ -2,7 +2,7 @@ package org.firstcapital.robot;
 
 import org.firstcapital.lib.webapp.Webserver;
 import org.firstcapital.robot.commands.autonomous.DoNothing;
-import org.firstcapital.robot.subsystems.Drivetrain;
+import org.firstcapital.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,6 +12,7 @@ public class Robot extends TimedRobot {
 	
 	public static Constants constants;
 	public static Drivetrain drivetrain;
+	public static Elevator elevator;
 	Webserver webserver;
 	
 	Command autonomousCommand = null;
@@ -20,6 +21,7 @@ public class Robot extends TimedRobot {
 		constants = Constants.getConstants();
 		
 		drivetrain = new Drivetrain();
+		elevator = new Elevator();
 		
 		drivetrain.resetEncoders();
 		
@@ -69,5 +71,10 @@ public class Robot extends TimedRobot {
 	
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+	}
+
+	public void robotPeriodic() {
+		Robot.drivetrain.update();
+		Robot.elevator.update();
 	}
 }
