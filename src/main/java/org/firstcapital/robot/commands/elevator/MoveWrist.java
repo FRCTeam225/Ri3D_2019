@@ -4,15 +4,15 @@ import org.firstcapital.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public class MoveElevator extends Command {
+public class MoveWrist extends Command {
 	double goal;
-	public MoveElevator(double goal) {
-		requires(Robot.elevator);
+	public MoveWrist(double goal) {
+		requires(Robot.arm);
 		this.goal = goal;
 	}
 	
 	public void initialize() {
-		Robot.elevator.goToGoal(goal);
+		Robot.arm.wristToGoal(goal);
 	}
 	
 	@Override

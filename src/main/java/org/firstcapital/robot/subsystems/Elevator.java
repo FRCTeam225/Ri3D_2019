@@ -18,7 +18,8 @@ public class Elevator extends Subsystem {
     double profileOffset = 0;
     TrapezoidalMotionProfile profile = null;
 
-    Spark[] motors = new Spark[] { new Spark(PortMap.ELEVATOR_PWM[0]), new Spark(PortMap.ELEVATOR_PWM[1]) };
+    Spark motor = new Spark(PortMap.ELEVATOR_PWM[0]);
+    //, new Spark(PortMap.ELEVATOR_PWM[1]) };
 
     Encoder encoder = new Encoder(PortMap.ELEVATOR_ENCODER[0], PortMap.ELEVATOR_ENCODER[1]);
 
@@ -42,7 +43,7 @@ public class Elevator extends Subsystem {
 
     public void setManual(double speed) {
         currentMode = Mode.MANUAL;
-        set(speed + constants.Elevator_kGravity);
+        set(speed);
     }
 
     public void holdPosition() {
@@ -61,8 +62,10 @@ public class Elevator extends Subsystem {
     }
 
     private void set(double speed) {
-        for ( Spark s : motors )
-            s.set(-speed);
+        FireLog.log("elevator_output", speed);
+        motor.set(-speed);
+        //for ( Spark s : motors )
+        //    s.set(-speed);
     }
 
     public void initDefaultCommand() {
@@ -71,7 +74,7 @@ public class Elevator extends Subsystem {
 
     public void update() {
         FireLog.log("elevator_position", encoder.getDistance());
-
+        FireLog.log("elevator_mode", currentMode);
         if ( currentMode == Mode.MANUAL )
             return;
 
@@ -83,14 +86,12 @@ public class Elevator extends Subsystem {
             output += point.vel * constants.Elevator_kF + error * constants.Elevator_kP;
             FireLog.log("elevator_error", error);
         }
-        else if ( currentMode == Mode.MANUAL ) {
+        else if ( currentMode == Mode.HOLD ) {
             double error = holdPosition - encoder.getDistance();
             output += error * constants.Elevator_kP;
             FireLog.log("elevator_error", error);
         }
 
-        if ( output < 0 && encoder.getDistance() < 50 )
-            output = 0;
         set(output);
 
     }

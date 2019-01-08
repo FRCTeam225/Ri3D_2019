@@ -30,12 +30,11 @@ public class DriveProfiledDistance extends Command {
         this.profile = new TrapezoidalMotionProfile(target, maxVel, maxAcc, vi, vf);
         this.vf = vf;
         this.target = target;
-
-        //setTimeout(profile.getDuration() + 2);
+        setInterruptible(true);
+        setTimeout(profile.getDuration() + 1.5);
     }
 
     public void initialize() {
-        System.out.println("test");
         time.reset();
         time.start();
         error = Double.MAX_VALUE;
@@ -43,17 +42,17 @@ public class DriveProfiledDistance extends Command {
     }
 
     public void execute() {
-        System.out.println("driving");
         ProfilePoint point = profile.getAtTime(time.get());
+        FireLog.log("drive_target", point.pos);
         error = point.pos - Robot.drivetrain.getDistance();
         double output = point.vel * constants.Drive_kF + error * constants.Drive_kP;
+        System.out.println("drive out "+output+" vel "+point.vel);
         double turn = (heading - Robot.drivetrain.getAngle()) * constants.Drive_TurnHold_kP;
         Robot.drivetrain.set(output + turn, output - turn);
     }
 
     public boolean isFinished() {
-        FireLog.log("drive_error", target - Robot.drivetrain.getDistance());
-        return Math.abs(target - Robot.drivetrain.getDistance()) < constants.Drive_OkayError;
+        return profile.getDuration() < time.get() && Math.abs(target - Robot.drivetrain.getDistance()) < constants.Drive_OkayError && !isTimedOut();
     }
 
     public void end() {

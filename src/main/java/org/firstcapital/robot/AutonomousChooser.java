@@ -42,9 +42,14 @@ public class AutonomousChooser {
 	public Command getSelectedAutonomous() {
 		if ( selected == -1 || selected > autonomi.length )
 			return null;
-		return autonomi[selected];
+		try {
+			return autonomi[selected].getClass().newInstance();
+		} catch ( Exception e ) {
+			System.err.println("Couldn't make fresh instance of auto command");
+			return autonomi[selected];
+		}
 	}
-	
+
 	public String getSelectedAutonomousName() {
 		if ( selected == -1 || selected > autonomi.length )
 			return "Chooser is empty";

@@ -61,7 +61,7 @@ var app = new Vue({
     }
 });
 
-var sock = new WebSocket("ws://172.22.11.2:5801/state/socket");
+var sock = new WebSocket("ws://10.2.25.2:5801/state/socket");
 sock.onmessage = function(rawmsg) {
   var msg = JSON.parse(rawmsg.data);
   app.recvData(msg);

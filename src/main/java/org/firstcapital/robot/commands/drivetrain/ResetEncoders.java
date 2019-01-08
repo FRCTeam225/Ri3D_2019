@@ -18,5 +18,4 @@ public class ResetEncoders extends Command {
 	protected boolean isFinished() {
 		return true;
 	}
-
 }

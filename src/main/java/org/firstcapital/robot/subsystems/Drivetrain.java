@@ -10,8 +10,10 @@ import org.firstcapital.robot.commands.drivetrain.CheesyDrive;
 import org.firstcapital.lib.webapp.FireLog;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -19,8 +21,8 @@ public class Drivetrain extends Subsystem{
     TalonSRX[] leftMotors;
     TalonSRX[] rightMotors;
 
-    Encoder left_encoder = new Encoder(PortMap.LEFT_DRIVE_ENC[0], PortMap.LEFT_DRIVE_ENC[1]);
-    Encoder right_encoder = new Encoder(PortMap.RIGHT_DRIVE_ENC[0], PortMap.RIGHT_DRIVE_ENC[1]);
+    Encoder left_encoder = new Encoder(PortMap.LEFT_DRIVE_ENC[0], PortMap.LEFT_DRIVE_ENC[1], false, EncodingType.k4X);
+    Encoder right_encoder = new Encoder(PortMap.RIGHT_DRIVE_ENC[0], PortMap.RIGHT_DRIVE_ENC[1], false, EncodingType.k4X);
 
 
     Solenoid shift = new Solenoid(PortMap.SHIFTER_SOLENOID);
@@ -49,7 +51,10 @@ public class Drivetrain extends Subsystem{
 
         resetEncoders();
         setLowGear(false);
-        
+
+        //gyro.calibrate();
+        gyro.reset();
+
         set(0, 0);
     }
 
@@ -58,11 +63,11 @@ public class Drivetrain extends Subsystem{
     }
 
     public double getLeftDistance() {
-        return left_encoder.getDistance();
+        return -left_encoder.getDistance();
     }
 
     public double getRightDistance() {
-        return right_encoder.getDistance();
+        return -right_encoder.getDistance();
     }
 
     public void resetEncoders() {
@@ -75,7 +80,7 @@ public class Drivetrain extends Subsystem{
     }
 
     public void resetGyro() {
-        gyro.reset();
+        //gyro.reset();
     }
 
     public void set(double left, double right) {
