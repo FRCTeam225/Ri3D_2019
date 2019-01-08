@@ -25,7 +25,7 @@ public class Constants {
     public double Drive_Turn_OkayError = 2;
 
     public double ElevatorMaxVelocity = 15000;
-    public double ElevatorMaxAccel = 20000;
+    public double ElevatorMaxAccel = 10000;
     public double Elevator_kP = 0.001;
     public double Elevator_kD = 0;
     public double Elevator_kF = 0;
@@ -52,7 +52,7 @@ public class Constants {
     public double AlmostPickupHatchWrist = -3455;
 
     public double ShootingWrist = -1940;
-    public double L2Arm = -2000;// 2000
+    public double L2Arm = -2100;// 2000
 
     public double TopElevator = 7000; //7000
 

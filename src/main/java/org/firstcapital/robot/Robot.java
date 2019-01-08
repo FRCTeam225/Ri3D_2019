@@ -102,12 +102,7 @@ public class Robot extends TimedRobot {
 		else
 			Robot.arm.setIntake(0);
 
-		if ( OI.driver.getRawButton(OI.X) )
-			Robot.pegs.set(true, false);
-		else if ( OI.driver.getRawButton(OI.Y) )
-			Robot.pegs.set(false, true);
-		else
-			Robot.pegs.set(false, false);
+		Robot.pegs.set(OI.driver.getRawButton(OI.X), OI.driver.getRawButton(OI.Y));
 
 		Robot.pegs.setEjector(OI.driver.getRawButton(OI.RB));
 
