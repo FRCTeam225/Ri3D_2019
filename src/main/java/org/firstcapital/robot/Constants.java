@@ -52,7 +52,8 @@ public class Constants {
     public double AlmostPickupHatchWrist = -3455;
 
     public double ShootingWrist = -1940;
-    public double L2Arm = -2500;
-    public double TopElevator = 8000;
+    public double L2Arm = -2000;// 2000
+
+    public double TopElevator = 7000; //7000
 
 }

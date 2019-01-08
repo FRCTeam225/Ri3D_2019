@@ -95,10 +95,10 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-		if ( OI.driver.getRawButton(OI.A) )
-			Robot.arm.setIntake(1);
-		else if ( OI.driver.getRawButton(OI.B) )
+		if ( OI.operator.getRawButton(OI.A) )
 			Robot.arm.setIntake(-1);
+		else if ( OI.operator.getRawButton(OI.B) )
+			Robot.arm.setIntake(1);
 		else
 			Robot.arm.setIntake(0);
 
@@ -112,10 +112,10 @@ public class Robot extends TimedRobot {
 		Robot.pegs.setEjector(OI.driver.getRawButton(OI.RB));
 
 
-		if ( OI.operator.getRawButton(OI.LB) ) {
+		if ( OI.operator.getRawButton(OI.RB) ) {
 			Robot.arm.wristToGoal(constants.ScoreHatchWrist);
 		}
-		else if ( OI.operator.getRawButton(OI.RB) ) {
+		else if ( OI.operator.getRawButton(OI.LB) ) {
 			Robot.arm.wristToGoal(constants.ScoreBallWrist);
 		}
 
